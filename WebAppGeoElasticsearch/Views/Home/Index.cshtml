@@ -23,7 +23,7 @@
             var myOptions = {
                 zoom: 13,
                 center: new google.maps.LatLng(46.94792, 7.44461),
-                mapTypeId: google.maps.MapTypeId.HYBRID
+                mapTypeId: google.maps.MapTypeId.ROADMAP
             };
             map = new google.maps.Map(document.getElementById("googleMap"), myOptions);
             mgr = new MarkerManager(map);
@@ -40,7 +40,8 @@
                     var array = coor.split(',');
                     var marker = new google.maps.Marker({
                         position: new google.maps.LatLng(array[1], array[0]),
-                        html:  htmlString
+                        html: htmlString,
+                        icon: "http://localhost:2765/Content/yourposition.png"
                 });
 
                 google.maps.event.addListener(marker, "click", function() {
@@ -51,6 +52,18 @@
                 mgr.addMarker(marker, 0);
 
             });
+
+                var homemarker = new google.maps.Marker({
+                    position: new google.maps.LatLng(46.94792, 7.44461),
+                    html: "YOU", draggable: true,
+                    icon: "http://localhost:2765/Content/ort.png"
+                });
+                google.maps.event.addListener(homemarker, 'dragend', function(evt) {
+                    alert('Marker dropped: Current Lat: ' + evt.latLng.lat().toFixed(3) + ' Current Lng: ' + evt.latLng.lng().toFixed(3));
+                    // todo add form document.getElementById('address');
+                });
+
+                mgr.addMarker(homemarker, 0);
 
             mgr.refresh();
         });
