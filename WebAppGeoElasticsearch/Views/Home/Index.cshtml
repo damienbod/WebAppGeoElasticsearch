@@ -1,0 +1,61 @@
+﻿
+@*Bern	46.94792, 7.44461 *@
+@model WebAppGeoMapElasticsearch.Controllers.MapModel
+
+<input type="hidden" value="@Model.MapData" id="mapdata" name="mapdata" />
+
+<div class="row">
+    @*Bern	46.94792, 7.44461 *@
+    <div id="googleMap" style="width: 1000px; height: 800px;">
+    </div>
+</div>
+
+@section scripts
+{
+    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+    <script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markermanager/src/markermanager.js"></script>
+
+    <script language="javascript" type="text/javascript">
+        var map;
+        var mgr;
+
+        function initialize() {
+            var myOptions = {
+                zoom: 13,
+                center: new google.maps.LatLng(46.94792, 7.44461),
+                mapTypeId: google.maps.MapTypeId.HYBRID
+            };
+            map = new google.maps.Map(document.getElementById("googleMap"), myOptions);
+            mgr = new MarkerManager(map);
+            var infoWindow = new google.maps.InfoWindow({ content: "contents" });
+            google.maps.event.addListener(mgr, 'loaded', function() {
+
+                var modelData = $.parseJSON($("#mapdata").val());
+
+                $.each(modelData, function(entryIndex, entry) {
+                    //alert("Data" + entry.DetailsCoordinates + ", " + entry.Details);
+
+                    var htmlString = "<a href=\"" + entry.Details + "\">" + entry.Name + "</a>";
+                    var coor = entry.DetailsCoordinates.toString();
+                    var array = coor.split(',');
+                    var marker = new google.maps.Marker({
+                        position: new google.maps.LatLng(array[1], array[0]),
+                        html:  htmlString
+                });
+
+                google.maps.event.addListener(marker, "click", function() {
+                    infoWindow.setContent(this.html);
+                    infoWindow.open(map, this);
+                });
+
+                mgr.addMarker(marker, 0);
+
+            });
+
+            mgr.refresh();
+        });
+        }
+
+        google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+}
