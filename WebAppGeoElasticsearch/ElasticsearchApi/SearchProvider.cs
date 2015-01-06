@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using ElasticsearchCRUD;
 using ElasticsearchCRUD.Model.GeoModel;
 using ElasticsearchCRUD.Tracing;
-using WebAppGeoMapElasticsearch.Models;
+using WebAppGeoElasticsearch.Models;
 
-namespace WebAppGeoMapElasticsearch.ElasticsearchApi
+namespace WebAppGeoElasticsearch.ElasticsearchApi
 {
 	public class SearchProvider
 	{

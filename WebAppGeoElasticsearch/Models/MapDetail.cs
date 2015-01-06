@@ -1,7 +1,7 @@
 ﻿using ElasticsearchCRUD.ContextAddDeleteUpdate.CoreTypeAttributes;
 using ElasticsearchCRUD.Model.GeoModel;
 
-namespace WebAppGeoMapElasticsearch.Models
+namespace WebAppGeoElasticsearch.Models
 {
 	public class MapDetail
 	{

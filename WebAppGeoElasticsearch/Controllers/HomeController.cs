@@ -1,8 +1,9 @@
 ﻿using System.Web.Mvc;
 using System.Web.Script.Serialization;
-using WebAppGeoMapElasticsearch.ElasticsearchApi;
+using WebAppGeoElasticsearch.ElasticsearchApi;
+using WebAppGeoElasticsearch.Models;
 
-namespace WebAppGeoMapElasticsearch.Controllers
+namespace WebAppGeoElasticsearch.Controllers
 {
 	public class HomeController : Controller
 	{
@@ -19,10 +20,5 @@ namespace WebAppGeoMapElasticsearch.Controllers
 				}
 			);
 		}
-	}
-
-	public class MapModel
-	{
-		public string MapData { get; set; }
 	}
 }
