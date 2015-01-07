@@ -20,5 +20,19 @@ namespace WebAppGeoElasticsearch.Controllers
 				}
 			);
 		}
+
+		public ActionResult Search(int maxDistanceInMeter, double centerLongitude, double centerLatitude)
+		{
+			//_searchProvider.InitMapDetailMapping();
+			//_searchProvider.AddMapDetailData();
+			return View("Index",
+				new MapModel
+				{
+					MapData = new JavaScriptSerializer().Serialize(_searchProvider.SearchForClosest(maxDistanceInMeter, centerLongitude, centerLatitude))
+				}
+			);
+		}
+
+		
 	}
 }

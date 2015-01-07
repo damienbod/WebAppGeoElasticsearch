@@ -4,6 +4,36 @@
 
 <input type="hidden" value="@Model.MapData" id="mapdata" name="mapdata" />
 
+@using (Html.BeginForm("Search", "Home"))
+{
+    <fieldset class="form">
+        <legend>SEARCH for closest document in the search engine using geo distance</legend>
+        <table width="800">
+            <tr>
+                <th></th>
+            </tr>
+            <tr>
+            
+            </tr>
+            <tr>
+                <td>
+                    <input id="button" type="button" title="Search for closest: " value="Search fo closest: " style="width: 300px" />
+                </td>
+                <td>
+                    <input type="hidden" value="7.44461" id="centerLongitude" name="centerLongitude" />
+                    <input type="hidden" value=" 46.94792" id="centerLatitude" name="centerLatitude" />
+
+                </td>
+                <td>
+                    <p style="width: 300px">Max distance in meter:</p>
+                    <input id="maxDistanceInMeter" name="maxDistanceInMeter" type="text" title="" value="3000" style="width: 200px" />
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+
+}
+
 <div class="row">
     @*Bern	46.94792, 7.44461 *@
     <div id="googleMap" style="width: 1000px; height: 800px;">
@@ -60,7 +90,8 @@
                 });
                 google.maps.event.addListener(homemarker, 'dragend', function(evt) {
                     alert('Marker dropped: Current Lat: ' + evt.latLng.lat().toFixed(3) + ' Current Lng: ' + evt.latLng.lng().toFixed(3));
-                    // todo add form document.getElementById('address');
+                    document.getElementById('centerLongitude').val(evt.latLng.lng().toFixed(3));
+                    document.getElementById('centerLatitude').val(evt.latLng.lat().toFixed(3));
                 });
 
                 mgr.addMarker(homemarker, 0);
