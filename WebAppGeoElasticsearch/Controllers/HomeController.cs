@@ -11,26 +11,31 @@ namespace WebAppGeoElasticsearch.Controllers
 
 		public ActionResult Index()
 		{
-			//_searchProvider.InitMapDetailMapping();
-			//_searchProvider.AddMapDetailData();
-			return View(
-				new MapModel
-				{
-					MapData = new JavaScriptSerializer().Serialize(_searchProvider.SearchAll())
-				}
-			);
+			var searchResult = _searchProvider.SearchForClosest(0, 7.44461, 46.94792);
+			var mapModel = new MapModel
+			{
+				MapData = new JavaScriptSerializer().Serialize(searchResult),
+				// Bern	Lat 46.94792, Long 7.44461
+				CenterLatitude = 46.94792,
+				CenterLongitude = 7.44461,
+				MaxDistanceInMeter=0
+			};
+
+			return View(mapModel);
 		}
 
 		public ActionResult Search(int maxDistanceInMeter, double centerLongitude, double centerLatitude)
 		{
-			//_searchProvider.InitMapDetailMapping();
-			//_searchProvider.AddMapDetailData();
-			return View("Index",
-				new MapModel
-				{
-					MapData = new JavaScriptSerializer().Serialize(_searchProvider.SearchForClosest(maxDistanceInMeter, centerLongitude, centerLatitude))
-				}
-			);
+			var searchResult = _searchProvider.SearchForClosest(maxDistanceInMeter, centerLongitude, centerLatitude);
+			var mapModel = new MapModel
+			{
+				MapData = new JavaScriptSerializer().Serialize(searchResult),
+				CenterLongitude = centerLongitude,
+				CenterLatitude = centerLatitude,
+				MaxDistanceInMeter = maxDistanceInMeter
+			};
+
+			return View("Index", mapModel);
 		}
 
 		
