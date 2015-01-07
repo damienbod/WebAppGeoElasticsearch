@@ -105,19 +105,6 @@ namespace WebAppGeoElasticsearch.ElasticsearchApi
 			return result;
 		}
 
-		public List<MapDetail> SearchAll()
-		{
-			List<MapDetail> result;
-			using (
-				var context = new ElasticsearchContext(ConnectionString,
-					new ElasticsearchSerializerConfiguration(_elasticsearchMappingResolver)))
-			{
-				result = context.Search<MapDetail>("").PayloadResult.Hits.HitsResult.Select(t => t.Source).ToList();
-			}
-
-			return result;
-		}
-
 		public bool MapDetailsIndexExists()
 		{
 			bool exists;

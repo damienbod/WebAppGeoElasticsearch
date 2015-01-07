@@ -36,8 +36,6 @@ namespace WebAppGeoElasticsearch.Controllers
 			};
 
 			return View("Index", mapModel);
-		}
-
-		
+		}		
 	}
 }
