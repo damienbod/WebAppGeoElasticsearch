@@ -24,7 +24,7 @@ namespace WebAppGeoElasticsearch.Controllers
 			return View(mapModel);
 		}
 
-		public ActionResult Search(int maxDistanceInMeter, double centerLongitude, double centerLatitude)
+		public ActionResult Search(uint maxDistanceInMeter, double centerLongitude, double centerLatitude)
 		{
 			var searchResult = _searchProvider.SearchForClosest(maxDistanceInMeter, centerLongitude, centerLatitude);
 			var mapModel = new MapModel

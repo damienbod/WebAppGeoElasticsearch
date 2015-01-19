@@ -5,6 +5,6 @@
 		public string MapData { get; set; }
 		public double CenterLongitude { get; set; }
 		public double CenterLatitude { get; set; }
-		public int MaxDistanceInMeter { get; set; }
+		public uint MaxDistanceInMeter { get; set; }
 	}
 }

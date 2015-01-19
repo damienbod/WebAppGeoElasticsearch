@@ -1,8 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using ElasticsearchCRUD;
 using ElasticsearchCRUD.Model.GeoModel;
+using ElasticsearchCRUD.Model.SearchModel;
+using ElasticsearchCRUD.Model.SearchModel.Filters;
+using ElasticsearchCRUD.Model.SearchModel.Queries;
+using ElasticsearchCRUD.Model.SearchModel.Sorting;
+using ElasticsearchCRUD.Model.Units;
 using ElasticsearchCRUD.Tracing;
 using WebAppGeoElasticsearch.Models;
 
@@ -65,45 +69,83 @@ namespace WebAppGeoElasticsearch.ElasticsearchApi
 		//	]
 		//	}
 		//}
-		public List<MapDetail> SearchForClosest(int maxDistanceInMeter, double centerLongitude, double centerLatitude)
+		public List<MapDetail> SearchForClosest(uint maxDistanceInMeter, double centerLongitude, double centerLatitude)
 		{
-			var sb = new StringBuilder();
-			sb.Append("{");
-			sb.Append("  \"query\" : ");
-			sb.Append(" { ");
-			sb.Append("	\"filtered\" : { ");
-			sb.Append("		\"query\" : { ");
-			sb.Append("			\"match_all\" : {} ");
-			sb.Append("		}, ");
-			sb.Append("		\"filter\" : { ");
-			sb.Append("			\"geo_distance\" : { ");
-			sb.Append("				\"distance\" : \"" + maxDistanceInMeter + "m\", ");
-			sb.Append(" 			 \"detailscoordinates\" : [" + centerLongitude + "," + centerLatitude + "] ");
-			sb.Append("			} ");
-			sb.Append("		} ");
-			sb.Append("	} ");
-			sb.Append("  }, ");
-			sb.Append(" \"sort\" : [ ");
-			sb.Append("		{ ");
-			sb.Append("			\"_geo_distance\" : { ");
-			sb.Append("				\"detailscoordinates\" : [" + centerLongitude + "," + centerLatitude + "], ");
-			sb.Append("				\"order\" : \"asc\", ");
-			sb.Append("				\"unit\" : \"m\" ");
-			sb.Append("			} ");
-			sb.Append("		} ");
-			sb.Append("	] ");
-			sb.Append("	}, ");
-			sb.Append("} ");
-			List<MapDetail> result;
-			using (
-				var context = new ElasticsearchContext(ConnectionString,
-					new ElasticsearchSerializerConfiguration(_elasticsearchMappingResolver)))
+			var search = new Search
 			{
-				result = context.Search<MapDetail>(sb.ToString()).PayloadResult.Hits.HitsResult.Select(t => t.Source).ToList();
+				Query = new Query(
+					new Filtered( 
+						new Filter(
+							new GeoDistanceFilter( 
+								"detailscoordinates", 
+								new GeoPoint(centerLongitude, centerLatitude), 
+								new DistanceUnitMeter(maxDistanceInMeter)
+							)
+						)
+					)
+					{
+						Query = new Query(new MatchAllQuery())
+					}
+				),
+				Sort = new SortHolder(
+					new List<ISort>
+					{
+						new SortGeoDistance("detailscoordinates", DistanceUnitEnum.m)
+						{
+							Order = OrderEnum.asc
+						}
+					}
+				)
+			};
+
+			List<MapDetail> result;
+			using (var context = new ElasticsearchContext(ConnectionString, new ElasticsearchSerializerConfiguration(_elasticsearchMappingResolver)))
+			{
+				result = context.Search<MapDetail>(search).PayloadResult.Hits.HitsResult.Select(t => t.Source).ToList();
 			}
 
 			return result;
 		}
+
+		//public List<MapDetail> SearchForClosest(int maxDistanceInMeter, double centerLongitude, double centerLatitude)
+		//{
+		//	var sb = new StringBuilder();
+		//	sb.Append("{");
+		//	sb.Append("  \"query\" : ");
+		//	sb.Append(" { ");
+		//	sb.Append("	\"filtered\" : { ");
+		//	sb.Append("		\"query\" : { ");
+		//	sb.Append("			\"match_all\" : {} ");
+		//	sb.Append("		}, ");
+		//	sb.Append("		\"filter\" : { ");
+		//	sb.Append("			\"geo_distance\" : { ");
+		//	sb.Append("				\"distance\" : \"" + maxDistanceInMeter + "m\", ");
+		//	sb.Append(" 			 \"detailscoordinates\" : [" + centerLongitude + "," + centerLatitude + "] ");
+		//	sb.Append("			} ");
+		//	sb.Append("		} ");
+		//	sb.Append("	} ");
+		//	sb.Append("  }, ");
+		//	sb.Append(" \"sort\" : [ ");
+		//	sb.Append("		{ ");
+		//	sb.Append("			\"_geo_distance\" : { ");
+		//	sb.Append("				\"detailscoordinates\" : [" + centerLongitude + "," + centerLatitude + "], ");
+		//	sb.Append("				\"order\" : \"asc\", ");
+		//	sb.Append("				\"unit\" : \"m\" ");
+		//	sb.Append("			} ");
+		//	sb.Append("		} ");
+		//	sb.Append("	] ");
+		//	sb.Append("	}, ");
+		//	sb.Append("} ");
+		//	List<MapDetail> result;
+		//	using (
+		//		var context = new ElasticsearchContext(ConnectionString,
+		//			new ElasticsearchSerializerConfiguration(_elasticsearchMappingResolver)))
+		//	{
+		//		result = context.Search<MapDetail>(sb.ToString()).PayloadResult.Hits.HitsResult.Select(t => t.Source).ToList();
+		//	}
+
+		//	return result;
+		//}
 
 		public bool MapDetailsIndexExists()
 		{
