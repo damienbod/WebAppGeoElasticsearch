@@ -15,7 +15,7 @@ namespace WebAppGeoElasticsearch.ElasticsearchApi
 	public class SearchProvider
 	{
 		private readonly IElasticsearchMappingResolver _elasticsearchMappingResolver = new ElasticsearchMappingResolver();
-		private const string ConnectionString = "http://localhost.fiddler:9200";
+		private const string ConnectionString = "http://localhost:9200";
 
 		public void InitMapDetailMapping()
 		{
