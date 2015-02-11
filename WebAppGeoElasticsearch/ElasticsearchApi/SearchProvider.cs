@@ -15,7 +15,7 @@ namespace WebAppGeoElasticsearch.ElasticsearchApi
 	public class SearchProvider
 	{
 		private readonly IElasticsearchMappingResolver _elasticsearchMappingResolver = new ElasticsearchMappingResolver();
-		private const string ConnectionString = "http://localhost:9200";
+		private const string ConnectionString = "http://localhost.fiddler:9200";
 
 		public void InitMapDetailMapping()
 		{
@@ -92,6 +92,7 @@ namespace WebAppGeoElasticsearch.ElasticsearchApi
 					{
 						new SortGeoDistance("detailscoordinates", DistanceUnitEnum.m)
 						{
+							GeoPoint = new GeoPoint(centerLongitude, centerLatitude),
 							Order = OrderEnum.asc
 						}
 					}
