@@ -90,9 +90,8 @@ namespace WebAppGeoElasticsearch.ElasticsearchApi
 				Sort = new SortHolder(
 					new List<ISort>
 					{
-						new SortGeoDistance("detailscoordinates", DistanceUnitEnum.m)
+						new SortGeoDistance("detailscoordinates", DistanceUnitEnum.m, new GeoPoint(centerLongitude, centerLatitude))
 						{
-							GeoPoint = new GeoPoint(centerLongitude, centerLatitude),
 							Order = OrderEnum.asc
 						}
 					}
