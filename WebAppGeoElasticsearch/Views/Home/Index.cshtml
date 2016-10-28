@@ -12,9 +12,7 @@
             <tr>
                 <th></th>
             </tr>
-            <tr>
-            
-            </tr>
+            <tr></tr>
             <tr>
                 <td>
                     <input type="submit" value="Search for closest: " style="width: 300px">
@@ -42,10 +40,10 @@
 
 @section scripts
 {
-    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
-    <script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markermanager/src/markermanager.js"></script>
+ <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+<script type="text/javascript" src="https://cdn.rawgit.com/googlemaps/v3-utility-library/master/markermanager/src/markermanager_packed.js"></script>
 
-    <script language="javascript" type="text/javascript">
+<script language="javascript" type="text/javascript">
         var map;
         var mgr;
 
@@ -85,7 +83,7 @@
                             html: htmlString
                         });
                     }
-                   
+
 
                     google.maps.event.addListener(marker, "click", function() {
                         infoWindow.setContent(this.html);
@@ -119,5 +117,5 @@
         }
 
         google.maps.event.addDomListener(window, 'load', initialize);
-    </script>
+</script>
 }

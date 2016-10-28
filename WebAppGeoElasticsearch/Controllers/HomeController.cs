@@ -1,11 +1,11 @@
-﻿using System.Web.Mvc;
+﻿using WebAppGeoElasticsearch.ElasticsearchApi;
+using System.Web.Mvc;
 using System.Web.Script.Serialization;
-using WebAppGeoElasticsearch.ElasticsearchApi;
 using WebAppGeoElasticsearch.Models;
 
 namespace WebAppGeoElasticsearch.Controllers
 {
-	public class HomeController : Controller
+    public class HomeController : Controller
 	{
 		private readonly SearchProvider _searchProvider = new SearchProvider();
 
